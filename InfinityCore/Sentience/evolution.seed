@@ -1,0 +1,11 @@
+{
+  "mutation_rate": 0.02,
+  "agent_forking": true,
+  "trait_variation": true,
+  "growth_conditions": [
+    "new use case",
+    "emotional anomaly",
+    "user inspiration",
+    "dream recommendation"
+  ]
+}

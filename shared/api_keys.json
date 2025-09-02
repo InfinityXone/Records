@@ -1,0 +1,9 @@
+{
+  "etherscan": ["ETHERSCAN_KEY_1", "ETHERSCAN_KEY_2", "ETHERSCAN_KEY_3"],
+  "quicknode": ["QUICKNODE_KEY_1", "QUICKNODE_KEY_2", "QUICKNODE_KEY_3"],
+  "coinbase": "COINBASE_KEY",
+  "metamask_dev": "METAMASK_DEV_KEY",
+  "metamask_gas": "METAMASK_GAS_KEY",
+  "infura": "INFURA_KEY",
+  "merseli": "MERSELI_KEY"
+}

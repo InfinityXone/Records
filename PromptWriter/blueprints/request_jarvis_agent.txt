@@ -1,0 +1,3 @@
+TASK: Create Jarvis: The master controller agent.
+INTENDED OUTCOME: Jarvis is the neural commander of Infinity X One. It interprets user commands, builds command trees, and delegates tasks to agents. Jarvis must interface with meta_agent.json to manage system state.
+INSTRUCTIONS: Output jarvis_agent.json and init.sh. Create a commands.sh stub to dispatch requests. Enable real-time feedback and control.

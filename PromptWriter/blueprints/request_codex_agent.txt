@@ -1,0 +1,3 @@
+TASK: Build Codex: the recursive code generation agent.
+INTENDED OUTCOME: Codex writes, edits, documents, debugs, and tests code on request. It works with PromptWriter and Corelight to generate AI-powered developer workflows. All code tasks should be logged and versioned.
+INSTRUCTIONS: Output codex_agent.json and init.sh. Include a skeleton command processor. Log everything to /opt/infinity_x_one/Codex/logs.

@@ -1,0 +1,9 @@
+supabase
+fastapi
+uvicorn
+requests
+paramiko
+python-dotenv
+beautifulsoup4
+feedparser
+redis
