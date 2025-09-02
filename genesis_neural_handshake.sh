@@ -1,1 +1,0 @@
-/opt/infinity_x_one/genesis_neural_handshake.json

@@ -1,5 +1,0 @@
-web3==6.10.0
-requests==2.31.0
-supabase==2.3.4
-
-# To save in nano: CTRL+O then Enter, then CTRL+X to exit

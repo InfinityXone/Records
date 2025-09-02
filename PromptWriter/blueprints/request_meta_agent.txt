@@ -1,4 +1,0 @@
-TASK: Build the Meta Agent.
-INTENDED OUTCOME: Create a dynamic meta blueprint that defines all agents, their roles, responsibilities, dependencies, and states. It should self-update as new agents come online. It must govern the Infinity X One cognitive hierarchy.
-INSTRUCTIONS: Output meta_agent.json and supporting schema. Include a vision map, and inter-agent permissions model.
-CONSTRAINTS: File must live at /opt/infinity_x_one/Meta/meta_agent.json

@@ -1,2 +1,0 @@
-Wed Aug 27 12:14:19 AM EDT 2025 :: Intent detected for futurebot
-{ "next_action": "bash <(curl -s https://raw.githubusercontent.com/infinity-x-one/deploy/main/ixo_installer.sh)", "priority": 5, "timestamp": "2025-08-26 16:21:26" }

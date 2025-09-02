@@ -1,8 +1,0 @@
-{
-  "active_learning": true,
-  "dream_learning": true,
-  "summarize_logs": true,
-  "reflect_frequency": "daily",
-  "optimize_prompts": true,
-  "resurface_memory": true
-}
