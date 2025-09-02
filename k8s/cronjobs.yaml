@@ -1,0 +1,256 @@
+# CronJobs for periodic tasks in Infinity X One.
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: anomaly-scan-job
+spec:
+  schedule: "0 * * * *"  # every hour
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: anomaly-scan-job
+        spec:
+          containers:
+            - name: anomaly-scan
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.anomaly_worker"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: wallet-monitor-job
+spec:
+  schedule: "30 2 * * *"  # daily at 02:30 UTC
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: wallet-monitor-job
+        spec:
+          containers:
+            - name: wallet-monitor
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.wallet_monitor"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: github-scanner-job
+spec:
+  schedule: "0 */2 * * *"  # every 2 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: github-scanner-job
+        spec:
+          containers:
+            - name: github-scanner
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.github_scanner_worker"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: self-rewriter-job
+spec:
+  schedule: "0 */6 * * *"  # every 6 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: self-rewriter-job
+        spec:
+          containers:
+            - name: self-rewriter
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.neural_self_rewriter"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: echo-feedback-job
+spec:
+  schedule: "*/30 * * * *"  # every 30 minutes
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: echo-feedback-job
+        spec:
+          containers:
+            - name: echo-feedback
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.echo_feedback"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: core-improver-job
+spec:
+  schedule: "0 3 * * *"  # daily at 03:00 UTC
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: core-improver-job
+        spec:
+          containers:
+            - name: core-improver
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.core_improver"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sandbox-mutator-job
+spec:
+  schedule: "*/15 * * * *"  # every 15 minutes
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: sandbox-mutator-job
+        spec:
+          containers:
+            - name: sandbox-mutator
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.sandbox_mutator"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: wallet-rotator-job
+spec:
+  # rotate wallets every day at 01:00 UTC
+  schedule: "0 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: wallet-rotator-job
+        spec:
+          containers:
+            - name: wallet-rotator
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.wallet_rotator"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scraper-unified-job
+spec:
+  # Run unified scraper every hour
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: scraper-unified-job
+        spec:
+          containers:
+            - name: scraper-unified
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.scraper_unified_worker"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: resource-allocator-job
+spec:
+  # Evaluate resource allocation every 30 minutes
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: resource-allocator-job
+        spec:
+          containers:
+            - name: resource-allocator
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.resource_allocator"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: knowledge-scanner-job
+spec:
+  # Scan for new knowledge every 6 hours
+  schedule: "0 */6 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: knowledge-scanner-job
+        spec:
+          containers:
+            - name: knowledge-scanner
+              image: yourdockerregistry/infinity-worker:latest
+              command: ["python", "-m", "deployment_package.backend.workers.knowledge_scanner"]
+              envFrom:
+                - secretRef:
+                    name: infinityx-env
+          restartPolicy: OnFailure

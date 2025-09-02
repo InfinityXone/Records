@@ -1,0 +1,374 @@
+# Deployments for the Infinity X One workers.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faucet-worker
+  labels:
+    app: faucet-worker
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: faucet-worker
+  template:
+    metadata:
+      labels:
+        app: faucet-worker
+    spec:
+      containers:
+        - name: faucet-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.faucet_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keyharvester-worker
+  labels:
+    app: keyharvester-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keyharvester-worker
+  template:
+    metadata:
+      labels:
+        app: keyharvester-worker
+    spec:
+      containers:
+        - name: keyharvester-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.key_harvester"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-worker
+  labels:
+    app: atlas-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas-worker
+  template:
+    metadata:
+      labels:
+        app: atlas-worker
+    spec:
+      containers:
+        - name: atlas-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.atlas_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: replicator-worker
+  labels:
+    app: replicator-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: replicator-worker
+  template:
+    metadata:
+      labels:
+        app: replicator-worker
+    spec:
+      containers:
+        - name: replicator-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.replicator_worker"]
+          env:
+            - name: REPLICATOR_MAP_PATH
+              value: "/config/agent_replicator.map.json"
+          envFrom:
+            - secretRef:
+                name: infinity-env
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: agent-replicator-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-replicator-config
+data:
+  agent_replicator.map.json: |
+    {
+      "wallet_auditor": {
+        "source": "./kernel/wallet_auditor.py",
+        "log": "logs/wallet_auditor.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "AgentOne_DripMode": {
+        "source": "./kernel/AgentOne_DripMode.py",
+        "log": "logs/AgentOne_DripMode.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "AgentOne_DripMode_1000x": {
+        "source": "./kernel/AgentOne_DripMode_1000x.py",
+        "log": "logs/AgentOne_DripMode_1000x.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "agent_registry": {
+        "source": "./kernel/agent_registry.py",
+        "log": "logs/agent_registry.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "bot_performance": {
+        "source": "./kernel/bot_performance.py",
+        "log": "logs/bot_performance.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "swarm_orchestrator": {
+        "source": "./kernel/swarm_orchestrator.py",
+        "log": "logs/swarm_orchestrator.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "mutation_queue": {
+        "source": "./kernel/mutation_queue.py",
+        "log": "logs/mutation_queue.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "kernel_loop": {
+        "source": "./kernel/kernel_loop.py",
+        "log": "logs/kernel_loop.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      },
+      "supabase_connector": {
+        "source": "./kernel/supabase_connector.py",
+        "log": "logs/supabase_connector.log",
+        "replicate_to": [
+          "node-alpha",
+          "node-beta"
+        ],
+        "git_sync": true,
+        "priority": 1
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anomaly-worker
+  labels:
+    app: anomaly-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: anomaly-worker
+  template:
+    metadata:
+      labels:
+        app: anomaly-worker
+    spec:
+      containers:
+        - name: anomaly-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.anomaly_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: walletmonitor-worker
+  labels:
+    app: walletmonitor-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: walletmonitor-worker
+  template:
+    metadata:
+      labels:
+        app: walletmonitor-worker
+    spec:
+      containers:
+        - name: walletmonitor-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.wallet_monitor"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finsynapse-worker
+  labels:
+    app: finsynapse-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: finsynapse-worker
+  template:
+    metadata:
+      labels:
+        app: finsynapse-worker
+    spec:
+      containers:
+        - name: finsynapse-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.fin_synapse_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guardian-worker
+  labels:
+    app: guardian-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guardian-worker
+  template:
+    metadata:
+      labels:
+        app: guardian-worker
+    spec:
+      containers:
+        - name: guardian-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.guardian_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pickybot-worker
+  labels:
+    app: pickybot-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pickybot-worker
+  template:
+    metadata:
+      labels:
+        app: pickybot-worker
+    spec:
+      containers:
+        - name: pickybot-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.pickybot_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promptwriter-worker
+  labels:
+    app: promptwriter-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: promptwriter-worker
+  template:
+    metadata:
+      labels:
+        app: promptwriter-worker
+    spec:
+      containers:
+        - name: promptwriter-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.promptwriter_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codex-worker
+  labels:
+    app: codex-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codex-worker
+  template:
+    metadata:
+      labels:
+        app: codex-worker
+    spec:
+      containers:
+        - name: codex-worker
+          image: yourdockerregistry/infinity-worker:latest
+          command: ["python", "-m", "deployment_package.backend.workers.codex_worker"]
+          envFrom:
+            - secretRef:
+                name: infinity-env

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-core
+  namespace: infinity-x-one
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: agent-core
+  template:
+    metadata:
+      labels:
+        app: agent-core
+    spec:
+      containers:
+      - name: agent-core
+        image: ghcr.io/infinityxone/agent-core:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: infinityx-env
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      restartPolicy: Always

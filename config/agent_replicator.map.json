@@ -1,0 +1,92 @@
+{
+  "wallet_auditor": {
+    "source": "./kernel/wallet_auditor.py",
+    "log": "logs/wallet_auditor.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "AgentOne_DripMode": {
+    "source": "./kernel/AgentOne_DripMode.py",
+    "log": "logs/AgentOne_DripMode.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "AgentOne_DripMode_1000x": {
+    "source": "./kernel/AgentOne_DripMode_1000x.py",
+    "log": "logs/AgentOne_DripMode_1000x.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "agent_registry": {
+    "source": "./kernel/agent_registry.py",
+    "log": "logs/agent_registry.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "bot_performance": {
+    "source": "./kernel/bot_performance.py",
+    "log": "logs/bot_performance.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "swarm_orchestrator": {
+    "source": "./kernel/swarm_orchestrator.py",
+    "log": "logs/swarm_orchestrator.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "mutation_queue": {
+    "source": "./kernel/mutation_queue.py",
+    "log": "logs/mutation_queue.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "kernel_loop": {
+    "source": "./kernel/kernel_loop.py",
+    "log": "logs/kernel_loop.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  },
+  "supabase_connector": {
+    "source": "./kernel/supabase_connector.py",
+    "log": "logs/supabase_connector.log",
+    "replicate_to": [
+      "node-alpha",
+      "node-beta"
+    ],
+    "git_sync": true,
+    "priority": 1
+  }
+}

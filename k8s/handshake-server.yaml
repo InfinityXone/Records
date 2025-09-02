@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handshake-server
+  labels:
+    app: handshake-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: handshake-server
+  template:
+    metadata:
+      labels:
+        app: handshake-server
+    spec:
+      containers:
+        - name: handshake-server
+          # Replace this with the name of your built server image.
+          image: yourdockerregistry/infinity-handshake-server:latest
+          ports:
+            - containerPort: 8000
+            - containerPort: 8001
+          envFrom:
+            - secretRef:
+                name: infinity-env
+          # Optionally specify a command if your image does not default to
+          # running the FastAPI server.  For example:
+          # command: ["uvicorn", "deployment_package.backend.handshake_server:app", "--host", "0.0.0.0", "--port", "8000"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: handshake-server
+spec:
+  type: ClusterIP
+  selector:
+    app: handshake-server
+  ports:
+    - name: http-primary
+      port: 8000
+      targetPort: 8000
+    - name: http-fallback
+      port: 8001
+      targetPort: 8001

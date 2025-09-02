@@ -1,0 +1,10 @@
+Rosetta Prompt (Persistent Memory)
+----------------------------------
+
+This file contains the Rosetta DNA for Infinity X One.  Its
+contents are loaded at runtime via ``backend/init/rosetta_loader.py``
+to seed persistent memory, identity, and protocol awareness in the
+agent swarm.  You can customize this file with your own oath,
+manifestos, and long‑term memory instructions.  The loader will
+print the first few hundred characters to the console when the
+application starts.
